@@ -2,7 +2,6 @@ pandas
 plotly
 numpy
 streamlit_aggrid
-os
 pathlib
 
 
