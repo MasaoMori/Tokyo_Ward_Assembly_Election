@@ -26,7 +26,8 @@ st.set_page_config(layout="wide")
 wardlist = ['中央', '台東', '品川', '目黒', '大田', '渋谷']
 yearlist = ('2019','2015','2011')
 wardname = st.sidebar.selectbox("対象区名", wardlist)
-year = st.sidebar.selectbox('年',yearlist)
+#year = st.sidebar.selectbox('年',yearlist)
+year = yearlist[0]
 #　year = st.sidebar.selectbox('年',(2011,2015,2019))
 
 
