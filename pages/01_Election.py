@@ -63,7 +63,7 @@ fig = px.line(
 #                  yaxis=dict(range=(y_lower,y_upper),dtick=1000))
 
 mm = m.pivot(index=['氏名'],columns='年',values='得票数').sort_values(year,ascending=False).reset_index()
-mm.style.applymap("{:,.0}")
+mm.style.applymap(f"{:,.0}")
 
 #
 # Plot procedure
