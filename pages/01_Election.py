@@ -62,7 +62,7 @@ fig = px.line(
 #fig.update_layout(xaxis=dict(range=(2010,2020),dtick=1),
 #                  yaxis=dict(range=(y_lower,y_upper),dtick=1000))
 
-mm = m.pivot(index=['氏名','略称党名'],columns='年',values='得票数').sort_values(year,ascending=False).reset_index()
+mm = m.pivot(index=['氏名'],columns='年',values='得票数').sort_values(year,ascending=False).reset_index()
 
 
 #
