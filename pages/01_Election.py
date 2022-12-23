@@ -24,7 +24,7 @@ data = pd.read_csv(ppath + '/data/election.csv',
 st.set_page_config(layout="wide")
 #### サイドバーでパラメータを決める
 wardlist = ['中央', '台東', '品川', '目黒', '大田', '渋谷']
-# yearlistは降順
+# yearlistは降順で
 yearlist = ('2019','2015','2011')
 wardname = st.sidebar.selectbox("対象区名", wardlist)
 year = st.sidebar.selectbox('年',yearlist)
