@@ -1,0 +1,8 @@
+pandas
+plotly
+numpy
+st_aggrid
+os
+pathlib
+
+
