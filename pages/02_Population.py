@@ -63,7 +63,7 @@ fig_young = px.bar(
     younger_people,
     x='人口',
     y='地域',
-    title='18〜27歳人口（トップの数は和）',
+    title='18〜27歳人口（推計・トップの数は総和）',
     color='年齢',
     height=800,
     width=920,
