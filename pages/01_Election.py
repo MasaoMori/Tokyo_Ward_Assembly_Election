@@ -26,7 +26,9 @@ st.set_page_config(layout="wide")
 wardlist = ['中央', '台東', '品川', '目黒', '大田', '渋谷']
 yearlist = ('2019','2015','2011')
 wardname = st.sidebar.selectbox("対象区名", wardlist)
-#year = st.sidebar.selectbox('年',yearlist)
+obj_value = st.sidebar.radio('実数か割合を選んでください',('得票数','得票率%'))
+
+ #year = st.sidebar.selectbox('年',yearlist)
 year = yearlist[0]
 #　year = st.sidebar.selectbox('年',(2011,2015,2019))
 
@@ -39,18 +41,21 @@ m = data[(data['当落']=='当') & (data['区名']==wardname)].loc[:,pivot_colum
 # これはやめ
 
 # 凡例の出現順序を決める
-sorted_candidate = list(m[m['年']==year].sort_values('得票数',ascending=False)['氏名'])
+#sorted_candidate = list(m[m['年']==year].sort_values('得票数',ascending=False)['氏名'])
+sorted_candidate = list(m[m['年']==year].sort_values(obj_value, ascending=False)['氏名'])
 
 #y_upper = np.ceil(max(m[m['年']==year]['得票数'])*1.3)
 #y_lower = np.ceil(min(m[m['年']==year]['得票数'])*0.7)
 # 縦軸の上限下限
 
+
+
 import plotly.express as px
 fig = px.line(
     m.sort_values('年'),
     x='年',
-    y='得票数',
-    text='得票数',
+    y=obj_value,
+    text=obj_value,
     color='氏名',
     category_orders={'氏名':sorted_candidate,
                      '年':['2011','2015','2019']},
@@ -62,7 +67,7 @@ fig = px.line(
 #fig.update_layout(xaxis=dict(range=(2010,2020),dtick=1),
 #                  yaxis=dict(range=(y_lower,y_upper),dtick=1000))
 
-mm = m.pivot(index=['氏名'],columns='年',values='得票数').sort_values(year,ascending=False).reset_index()
+mm = m.pivot(index=['氏名'],columns='年',values=obj_value).sort_values(year,ascending=False).reset_index()
 mm.style.applymap("{:,.0}")
 
 #
@@ -71,9 +76,9 @@ mm.style.applymap("{:,.0}")
 st.title(wardname+'区')
 st.subheader('選挙概要')
 AgGrid.AgGrid(summary[summary['区名']==wardname],fit_columns_on_grid_load=True,height=120)
-st.subheader('得票数グラフ')
+st.subheader(obj_value + 'グラフ')
 st.write("凡例は最新の選挙結果を降順に並べています。データは当選者のみです。凡例の候補者名をダブルクリックすると、グラフ全体が消え、その候補者だけを表示できます。その状態で、他の候補者をシングルクリックすると、その候補者のグラフが出現します。")
 st.plotly_chart(fig, use_container_width=True)
-st.subheader('得票数表')
+st.subheader(obj_value + '表')
 st.write("最新の選挙結果を降順に並べています。データは当選者のみです。ヘッダの年をクリックすると、その年のデータで並び替えられます。空欄は実績がないことを意味します。")
 AgGrid.AgGrid(mm,fit_columns_on_grid_load=True,height=600)
