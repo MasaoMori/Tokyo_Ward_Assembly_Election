@@ -5,6 +5,7 @@ streamlit_aggrid
 pathlib
 geopandas
 folium
+streamlit_folium
 matplotlib
 mapclassify
 

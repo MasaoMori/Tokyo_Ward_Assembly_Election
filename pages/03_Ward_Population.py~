@@ -1,0 +1,23 @@
+import geopandas as gpd
+import folium
+import matplotlib
+import mapclassify
+import numpy as np
+
+geodir = d + '/../geoshape/'
+
+ward=['港区','目黒区','大田区','品川区','渋谷区']
+w=ward[0]
+f=fiveband[10]
+print(w,f)
+
+
+
+gdf = gpd.read_file(geodir + w + '.geojson')
+gdf = gdf[gdf['HCODE']==8101]
+kgdf = pd.merge(final, gdf, left_on=['区','町丁目名'], right_on=['CITY_NAME','S_NAME'], how='left')
+kgdf = kgdf[kgdf['区']==w]
+kgdf = kgdf[kgdf['世代']==f]
+tmp_kgdf = gpd.GeoDataFrame(kgdf)
+
+tmp_kgdf.explore(column=tmp_kgdf['人口'],cmap='Reds',tooltip=['町丁目名','人口'],tiles='CartoDB positron')
