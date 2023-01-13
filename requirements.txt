@@ -3,5 +3,10 @@ plotly
 numpy
 streamlit_aggrid
 pathlib
+geopandas
+folium
+matplotlib
+mapclassify
+
 
 
