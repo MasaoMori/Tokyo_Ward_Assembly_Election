@@ -11,6 +11,7 @@ from streamlit_folium import st_folium
 
 d = os.getcwd()
 geodir = d + '/geoshape/'
+
 fiveband = ['0~4歳', '5~9歳', '10~14歳', '15~19歳', '20~24歳', '25~29歳', '30~34歳',
  '35~39歳', '40~44歳', '45~49歳', '50~54歳', '55~59歳', '60~64歳', '65~69歳',
  '70~74歳', '75~79歳', '80~84歳', '85~89歳', '90~94歳', '95~99歳', '100~104歳',
@@ -20,18 +21,40 @@ final = pd.read_csv(d+'/data/Ward_Age/final_data.csv')
 ward=['港区','目黒区','大田区','品川区','渋谷区']
 
 w = st.sidebar.selectbox("区名", ward)
-f = st.sidebar.selectbox('世代', fiveband)
+fb = st.sidebar.multiselect('世代', fiveband, ['15~19歳', '20~24歳'])
 
+gen = ','.join(fb)
+
+pop = final[final['区']==w]
+qoq = pd.DataFrame()
+for g in fb:
+    qoq = pd.concat([qoq, pop[pop['世代']==g]])
+        
+qoq = qoq.groupby(['区','町丁目名'])['人口'].sum().reset_index()
+        
 gdf = gpd.read_file(geodir + w + '.geojson')
 gdf = gdf[gdf['HCODE']==8101]
-kgdf = pd.merge(final, gdf, left_on=['区','町丁目名'], right_on=['CITY_NAME','S_NAME'], how='left')
-kgdf = kgdf[kgdf['区']==w]
-kgdf = kgdf[kgdf['世代']==f]
-tmp_kgdf = gpd.GeoDataFrame(kgdf)
+result = pd.merge(qoq, gdf, left_on=['区','町丁目名'], right_on=['CITY_NAME','S_NAME']) # , how='left')
+result['世代'] = gen
 
-m = tmp_kgdf.explore(column=tmp_kgdf['人口'],cmap='Reds',tooltip=['町丁目名','人口'],tiles='CartoDB positron')
+result = gpd.GeoDataFrame(result)
 
-st.subheader(w+f)
-st_data = st_folium(m)
+result_map = result.explore(column=result['人口'],cmap='Reds',tooltip=['町丁目名','世代','人口'],tiles='CartoDB positron')
 
-AgGrid.AgGrid(tmp_kgdf[['町丁目名','世代','人口']], fit_columns_on_grid_load=True)
+st.subheader(w)
+for f in fb:
+    st.write(f)
+st_data = st_folium(result_map)
+
+AgGrid.AgGrid(result[['町丁目名','世代','人口']], fit_columns_on_grid_load=True)
+
+
+# gdf = gpd.read_file(geodir + w + '.geojson')
+# gdf = gdf[gdf['HCODE']==8101]
+# kgdf = pd.merge(final, gdf, left_on=['区','町丁目名'], right_on=['CITY_NAME','S_NAME'], how='left')
+# kgdf = kgdf[kgdf['区']==w]
+# kgdf = kgdf[kgdf['世代']==f]
+# tmp_kgdf = gpd.GeoDataFrame(kgdf)
+
+# m = tmp_kgdf.explore(column=tmp_kgdf['人口'],cmap='Reds',tooltip=['町丁目名','人口'],tiles='CartoDB positron')
+# ward=['港区','目黒区','大田区','品川区','渋谷区']
