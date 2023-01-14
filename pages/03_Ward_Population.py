@@ -22,31 +22,38 @@ ward=['港区','目黒区','大田区','品川区','渋谷区']
 
 w = st.sidebar.selectbox("区名", ward)
 fb = st.sidebar.multiselect('世代', fiveband, ['15~19歳', '20~24歳'])
+st.sidebar.write('世代は複数選べます。')
 
-gen = ','.join(fb)
+if fb == []:
+    st.write('少なくとも1つの世代を選んでください。')
+else:
+    gen = ','.join(fb)
 
-pop = final[final['区']==w]
-qoq = pd.DataFrame()
-for g in fb:
-    qoq = pd.concat([qoq, pop[pop['世代']==g]])
-        
-qoq = qoq.groupby(['区','町丁目名'])['人口'].sum().reset_index()
-        
-gdf = gpd.read_file(geodir + w + '.geojson')
-gdf = gdf[gdf['HCODE']==8101]
-result = pd.merge(qoq, gdf, left_on=['区','町丁目名'], right_on=['CITY_NAME','S_NAME']) # , how='left')
-result['世代'] = gen
+    pop = final[final['区']==w]
+    qoq = pd.DataFrame()
+    for g in fb:
+        qoq = pd.concat([qoq, pop[pop['世代']==g]])
+    
+    qoq = qoq.groupby(['区','町丁目名'])['人口'].sum().reset_index()
 
-result = gpd.GeoDataFrame(result)
+    gdf = gpd.read_file(geodir + w + '.geojson')
+    gdf = gdf[gdf['HCODE']==8101]
+    result = pd.merge(qoq, gdf, left_on=['区','町丁目名'], right_on=['CITY_NAME','S_NAME'])# , how='right')
+    result['世代'] = gen
 
-result_map = result.explore(column=result['人口'],cmap='Reds',tooltip=['町丁目名','世代','人口'],tiles='CartoDB positron')
+    result = gpd.GeoDataFrame(result)
 
-st.subheader(w)
-for f in fb:
-    st.write(f)
-st_data = st_folium(result_map)
+    result_map = result.explore(column=result['人口'],
+                                cmap='Reds',
+                                tooltip=['町丁目名','世代','人口'],
+                                tiles='CartoDB positron')
 
-AgGrid.AgGrid(result[['町丁目名','世代','人口']], fit_columns_on_grid_load=True)
+    st.subheader(w)
+    for f in fb:
+        st.write(f)
+    st_folium(result_map, width='100%')
+
+    AgGrid.AgGrid(result[['町丁目名','世代','人口']], fit_columns_on_grid_load=True)
 
 
 # gdf = gpd.read_file(geodir + w + '.geojson')
