@@ -29,9 +29,9 @@ else:
     fb = st.sidebar.multiselect('世代', fiveband, ['15~19歳', '20~24歳'])
     st.sidebar.write('世代は複数選べます。')
 
-st.sidebar.radio()
+cclr = st.sidebar.radio('地図の色',['赤','青','緑','黒','橙','紫'],horizontal=True)
 
-clmap = {'赤':'Reds',
+mapcolor = {'赤':'Reds',
          '青':'Blues',
          '緑':'Greens',
          '黒':'Greys',
@@ -63,7 +63,7 @@ else:
     result = gpd.GeoDataFrame(result)
 
     result_map = result.explore(column=result['人口'],
-                                cmap=clmap',
+                                cmap=mapcolor[cclr],
                                 tooltip=['町丁目名','世代','人口'],
                                 tiles='CartoDB positron')
 
