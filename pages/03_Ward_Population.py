@@ -6,6 +6,7 @@ import mapclassify
 import numpy as np
 import os
 import streamlit as st
+import st_aggrid as AgGrid
 from streamlit_folium import st_folium
 
 d = os.getcwd()
@@ -33,3 +34,4 @@ m = tmp_kgdf.explore(column=tmp_kgdf['人口'],cmap='Reds',tooltip=['町丁目�
 st.subheader(w+f)
 st_data = st_folium(m)
 
+AgGrid.AgGrid(tmp_kgdf[['町丁目名','世代','人口']], fit_columns_on_grid_load=True)
