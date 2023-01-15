@@ -41,6 +41,9 @@ mapcolor = {'赤':'Reds',
 #
 final = pd.read_csv(d+'/data/Ward_Age/final_data.csv')
 chu_final = pd.read_csv(d+'/data/Ward_Age/final_chu_data.csv')
+rf = pd.read_csv(d+'/data/Ward_Age/Ward_data_reference_date.csv')
+
+refd = dict(zip(list(rf['区名']),list(rf['データ基準日'])))
 
 ward=['港区','目黒区','大田区','品川区','渋谷区','中央区']
 
@@ -101,8 +104,12 @@ else:
                                 tiles='CartoDB positron')
 
     st.subheader(w)
+    st.write('データ集計基準月（区発表）　'+refd[w])
+
     for f in fb:
         st.write(f)
-        st_folium(result_map, width='100%')
 
-    AgGrid.AgGrid(result.sort_values('KEY_CODE')[['町丁目名','世代','人口']], fit_columns_on_grid_load=True)
+    st_folium(result_map, width='100%')
+
+    ag_res = result.sort_values('KEY_CODE')[['町丁目名','世代','人口']]
+    AgGrid.AgGrid(ag_res, fit_columns_on_grid_load=True)
