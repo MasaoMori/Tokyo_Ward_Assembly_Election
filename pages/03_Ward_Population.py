@@ -9,28 +9,25 @@ import streamlit as st
 import st_aggrid as AgGrid
 from streamlit_folium import st_folium
 
-d = os.getcwd()
-geodir = d + '/geoshape/'
 
+### 各種定数の設定
+#
+# ファイルのありか
+#
+d = os.getcwd()
+geodir = d + '/geoshape/' 
+
+#
+# 世代
+#
 fiveband = ['0~4歳', '5~9歳', '10~14歳', '15~19歳', '20~24歳', '25~29歳', '30~34歳',
  '35~39歳', '40~44歳', '45~49歳', '50~54歳', '55~59歳', '60~64歳', '65~69歳',
  '70~74歳', '75~79歳', '80~84歳', '85~89歳', '90~94歳', '95~99歳', '100~104歳',
  '105~109歳', '110~114歳', '115~119歳', '120~124歳', '125~129歳']#, '130歳以上']
-final = pd.read_csv(d+'/data/Ward_Age/final_data.csv')
 
-ward=['港区','目黒区','大田区','品川区','渋谷区']
-
-w = st.sidebar.selectbox("区名", ward)
-all = st.sidebar.checkbox('全世代の総和で可視化')
-
-if all:
-    fb = ['全世代']
-else:
-    fb = st.sidebar.multiselect('世代', fiveband, ['15~19歳', '20~24歳'])
-    st.sidebar.write('世代は複数選べます。')
-
-cclr = st.sidebar.radio('地図の色',['赤','青','緑','黒','橙','紫'],horizontal=True)
-
+#
+# 地図の色目
+#
 mapcolor = {'赤':'Reds',
          '青':'Blues',
          '緑':'Greens',
@@ -39,11 +36,46 @@ mapcolor = {'赤':'Reds',
          '紫':'Purples'
          }
 
-if fb == []:
-    st.write('少なくとも1つの世代を選んでください。')
+#
+# 人口分布データ・中央区だけ全世代のみ
+#
+final = pd.read_csv(d+'/data/Ward_Age/final_data.csv')
+chu_final = pd.read_csv(d+'/data/Ward_Age/final_chu_data.csv')
+
+ward=['港区','目黒区','大田区','品川区','渋谷区','中央区']
+
+w = st.sidebar.selectbox("区名", ward) # 区を選択
+
+if w == '中央区':
+    # 中央区は全世代のデータしかないので、fb = ['全世代']に設定するためallを真に
+    all = True
 else:
-    pop = final[final['区']==w]
-    qoq = pd.DataFrame()
+    all = st.sidebar.checkbox('全世代の総和で可視化') # 全世代で見る場合のチェックボックス
+
+
+if all:
+    # 全世代チェックボックスを選ぶと、マルチセレクトボックスが表示されない
+    fb = ['全世代'] 
+else:
+    # 世代を複数可選択
+    fb = st.sidebar.multiselect('世代', fiveband, ['15~19歳', '20~24歳'])
+    st.sidebar.write('世代は複数選べます。')
+
+
+# 地図の色目を決める
+cclr = st.sidebar.radio('地図の色',['赤','青','緑','黒','橙','紫'],horizontal=True)
+
+if fb == []:
+    # 世代が一つも選ばれなかったら、警告
+    st.warning('少なくとも1つの世代を選んでください。', '⚠️')
+else:
+    if w == '中央区':
+        # 中央区はすでに全世代データはでているのでgroupbyはしないでqoqに代入
+        pop = chu_final
+    else:
+        # 中央区以外は区名で抽出
+        pop = final[final['区']==w]
+        qoq = pd.DataFrame()
 
     if fb == ['全世代']:
         gen = '全世代'
@@ -54,6 +86,7 @@ else:
             qoq = pd.concat([qoq, pop[pop['世代']==g]])
 
     qoq = qoq.groupby(['区','町丁目名'])['人口'].sum().reset_index()
+            
 
     gdf = gpd.read_file(geodir + w + '.geojson')
     gdf = gdf[gdf['HCODE']==8101]
@@ -70,17 +103,6 @@ else:
     st.subheader(w)
     for f in fb:
         st.write(f)
-    st_folium(result_map, width='100%')
+        st_folium(result_map, width='100%')
 
     AgGrid.AgGrid(result.sort_values('KEY_CODE')[['町丁目名','世代','人口']], fit_columns_on_grid_load=True)
-#
-
-# gdf = gpd.read_file(geodir + w + '.geojson')
-# gdf = gdf[gdf['HCODE']==8101]
-# kgdf = pd.merge(final, gdf, left_on=['区','町丁目名'], right_on=['CITY_NAME','S_NAME'], how='left')
-# kgdf = kgdf[kgdf['区']==w]
-# kgdf = kgdf[kgdf['世代']==f]
-# tmp_kgdf = gpd.GeoDataFrame(kgdf)
-
-# m = tmp_kgdf.explore(column=tmp_kgdf['人口'],cmap='Reds',tooltip=['町丁目名','人口'],tiles='CartoDB positron')
-# ward=['港区','目黒区','大田区','品川区','渋谷区']
