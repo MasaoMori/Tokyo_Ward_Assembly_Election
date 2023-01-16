@@ -45,7 +45,7 @@ rf = pd.read_csv(d+'/data/Ward_Age/Ward_data_reference_date.csv')
 
 refd = dict(zip(list(rf['区名']),list(rf['データ基準日'])))
 
-ward=['港区','目黒区','大田区','品川区','渋谷区','中央区']
+ward=['港区','目黒区','大田区','品川区','渋谷区','中央区','台東区']
 
 w = st.sidebar.selectbox("区名", ward) # 区を選択
 
@@ -70,7 +70,6 @@ cclr = st.sidebar.radio('地図の色',['赤','青','緑','黒','橙','紫'],hor
 
 if fb == []:
     # 世代が一つも選ばれなかったら、警告
-#    st.warning('少なくとも1つの世代を選んでください。', '⚠️')
     st.warning('少なくとも1つの世代を選んでください。')    
 else:
     if w == '中央区':
@@ -90,10 +89,10 @@ else:
             qoq = pd.concat([qoq, pop[pop['世代']==g]])
 
     qoq = qoq.groupby(['区','町丁目名'])['人口'].sum().reset_index()
-            
 
     gdf = gpd.read_file(geodir + w + '.geojson')
     gdf = gdf[gdf['HCODE']==8101]
+
     result = pd.merge(qoq, gdf, left_on=['区','町丁目名'], right_on=['CITY_NAME','S_NAME'])# , how='right')
     result['世代'] = gen
 
