@@ -47,7 +47,7 @@ refd = dict(zip(list(rf['区名']),list(rf['データ基準日'])))
 
 ward=['港区','目黒区','大田区','品川区','渋谷区','中央区','台東区','千代田区','練馬区','世田谷区']
 
-st.snow()
+
 w = st.sidebar.selectbox("区名", ward) # 区を選択
 
 if w == '中央区':
