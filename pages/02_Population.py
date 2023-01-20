@@ -100,6 +100,7 @@ fig_old.update_traces(textposition='outside')
 fig_young.update_traces(textposition='outside')
 
 # AgGrid.AgGrid(summary[summary['区名']==wardname],fit_columns_on_grid_load=True,height=120)
+st.snow()
 st.subheader('老年者（65歳以上）人口分布（2021年）')
 st.write("")
 st.plotly_chart(fig_old, use_container_width=True)
