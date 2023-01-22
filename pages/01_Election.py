@@ -23,7 +23,7 @@ data = pd.read_csv(ppath + '/data/election.csv',
 #####
 
 st.set_page_config(layout="wide")
-st.snow()
+#st.snow()
 #### サイドバーでパラメータを決める
 wardlist = list(tkcode[(131000 < tkcode['自治体コード']) & (tkcode['自治体コード'] < 132000)]['区名'])
 wardlist = list(map((lambda x: x.replace('区','')),wardlist))
