@@ -39,9 +39,9 @@ mapcolor = {'赤':'Reds',
 #
 # 人口分布データ・中央区だけ全世代のみ
 #
-final = pd.read_csv(d+'/data/Ward_Age/final_data.csv')
-chu_final = pd.read_csv(d+'/data/Ward_Age/final_chu_data.csv')
-rf = pd.read_csv(d+'/data/Ward_Age/Ward_data_reference_date.csv')
+final = pd.read_csv(d+'/data/Ward_Age_final_data.csv')
+chu_final = pd.read_csv(d+'/data/Ward_Age_final_chu_data.csv')
+rf = pd.read_csv(d+'/data/Ward_Age_Ward_data_reference_date.csv')
 
 refd = dict(zip(list(rf['区名']),list(rf['データ基準日'])))
 
