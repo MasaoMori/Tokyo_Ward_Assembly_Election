@@ -22,8 +22,8 @@ geodir = d + '/geoshape/'
 #
 fiveband = ['0~4歳', '5~9歳', '10~14歳', '15~19歳', '20~24歳', '25~29歳', '30~34歳',
  '35~39歳', '40~44歳', '45~49歳', '50~54歳', '55~59歳', '60~64歳', '65~69歳',
- '70~74歳', '75~79歳', '80~84歳', '85~89歳', '90~94歳', '95~99歳', '100~104歳',
- '105~109歳', '110~114歳', '115~119歳', '120~124歳', '125~129歳']#, '130歳以上']
+ '70~74歳', '75~79歳', '80~84歳', '85~89歳', '90~94歳', '95~99歳'] #, '100~104歳',
+# '105~109歳', '110~114歳', '115~119歳', '120~124歳', '125~129歳']#, '130歳以上']
 
 #
 # 地図の色目
@@ -39,6 +39,7 @@ mapcolor = {'赤':'Reds',
 #
 # 人口分布データ・中央区だけ全世代のみ
 #
+#final = pd.read_csv(d+'/data/Ward_Age_final_data.csv')
 final = pd.read_csv(d+'/data/Ward_Age_final_data.csv')
 chu_final = pd.read_csv(d+'/data/Ward_Age_final_chu_data.csv')
 rf = pd.read_csv(d+'/data/Ward_Age_Ward_data_reference_date.csv')
@@ -113,7 +114,7 @@ else:
                                 tiles='CartoDB positron')
 
     st.subheader(w)
-    st.write('データ集計基準月（区発表）　'+refd[w])
+#    st.write('データ集計基準月（区発表）　'+refd[w])
 
     for f in fb:
         st.write(f)
