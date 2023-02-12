@@ -41,7 +41,8 @@ mapcolor = {'赤':'Reds',
 #
 #final = pd.read_csv(d+'/data/Ward_Age_final_data.csv')
 final = pd.read_csv(d+'/data/Ward_Age_final_data.csv')
-chu_final = pd.read_csv(d+'/data/Ward_Age_final_chu_data.csv')
+#rough_final = pd.read_csv(d+'/data/Ward_Age_final_chu_data.csv')
+rough_final = pd.read_csv(d+'/data/Ward_Age_final_rough_data.csv')
 rf = pd.read_csv(d+'/data/Ward_Age_Ward_data_reference_date.csv')
 
 refd = dict(zip(list(rf['区名']),list(rf['データ基準日'])))
@@ -51,6 +52,8 @@ ward=['港区','目黒区','大田区','品川区','渋谷区',
       '北区','葛飾区','板橋区','江戸川区','墨田区','新宿区','文京区',
       '中野区','杉並区','豊島区','江東区','足立区','荒川区']
 
+rough_ward = ['中央区','文京区','中野区']
+
 # ['北区','葛飾区','板橋区','江戸川区','墨田区','新宿区','文京区',
 # '中野区','杉並区','豊島区','江東区','足立区','荒川区']
 #
@@ -59,8 +62,8 @@ ward=['港区','目黒区','大田区','品川区','渋谷区',
 
 w = st.sidebar.selectbox("区名", ward) # 区を選択
 
-if w == '中央区':
-    # 中央区は全世代のデータしかないので、fb = ['全世代']に設定するためallを真に
+if w in rough_ward: #w == '中央区':
+    # 中央区、文京区、中野区は全世代のデータしかないので、fb = ['全世代']に設定するためallを真に
     all = True
 else:
     all = st.sidebar.checkbox('全世代の総和で可視化') # 全世代で見る場合のチェックボックス
@@ -82,9 +85,9 @@ if fb == []:
     # 世代が一つも選ばれなかったら、警告
     st.warning('少なくとも1つの世代を選んでください。')    
 else:
-    if w == '中央区':
-        # 中央区はすでに全世代データはでているのでgroupbyはしないでqoqに代入
-        pop = chu_final
+    if w in rough_ward: #w == '中央区':
+        # 中央区、文京区、中野区はすでに全世代データはでているのでgroupbyはしないでqoqに代入
+        pop = rough_final
     else:
         # 中央区以外は区名で抽出
         pop = final[final['区']==w]
