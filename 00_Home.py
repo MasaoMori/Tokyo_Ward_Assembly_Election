@@ -3,7 +3,7 @@
 import streamlit as st
 
 ####
-st.snow()
+#st.snow()
 st.markdown("""
 ## 目的
 1. 過去3回の東京都区議会議員選挙における候補者への投票数と投票率(Election)。
