@@ -40,9 +40,11 @@ mapcolor = {'赤':'Reds',
 # 人口分布データ・中央区だけ全世代のみ
 #
 #final = pd.read_csv(d+'/data/Ward_Age_final_data.csv')
-final = pd.read_csv(d+'/data/Ward_Age_final_data.csv')
+#final = pd.read_csv(d+'/data/Ward_Age_final_data.csv')
+final = pd.read_csv(d+'/data/for_bi.csv')
 #rough_final = pd.read_csv(d+'/data/Ward_Age_final_chu_data.csv')
-rough_final = pd.read_csv(d+'/data/Ward_Age_final_rough_data.csv')
+#rough_final = pd.read_csv(d+'/data/Ward_Age_final_rough_data.csv')
+rough_final = pd.read_csv(d+'/data/for_bi_rough.csv')
 rf = pd.read_csv(d+'/data/Ward_Age_Ward_data_reference_date.csv')
 
 refd = dict(zip(list(rf['区名']),list(rf['データ基準日'])))
@@ -106,7 +108,7 @@ else:
     gdf = gpd.read_file(geodir + w + '.geojson')
     gdf = gdf[gdf['HCODE']==8101]
 
-    result = pd.merge(qoq, gdf, left_on=['区','町丁目名'], right_on=['CITY_NAME','S_NAME'])# , how='right')
+    result = pd.merge(qoq, gdf, left_on=['区','町丁目名'], right_on=['CITY_NAME','S_NAME'])
     result['世代'] = gen
 
     result = gpd.GeoDataFrame(result)
