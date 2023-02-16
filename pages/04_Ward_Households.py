@@ -41,7 +41,7 @@ ward = ['品川区']
 #       '北区','葛飾区','板橋区','江戸川区','墨田区','新宿区','文京区',
 #       '中野区','杉並区','豊島区','江東区','足立区','荒川区']
 
-w = st.sidebar.selectbox("区名", ward+'世帯数分布') # 区を選択
+w = st.sidebar.selectbox("区名", ward) # 区を選択
 
 # 地図の色目を決める
 cclr = st.sidebar.radio('地図の色',['赤','青','緑','黒','橙','紫'],horizontal=True)
@@ -61,7 +61,7 @@ result_map = result.explore(column=result['世帯数'],
                             tooltip=['町丁目名','世帯数'],
                             tiles='CartoDB positron')
 
-st.subheader(w)
+st.subheader(w+'世帯数分布')
 #    st.write('データ集計基準月（区発表）　'+refd[w])
 
     
