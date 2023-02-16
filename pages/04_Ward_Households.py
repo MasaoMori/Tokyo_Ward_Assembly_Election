@@ -68,5 +68,5 @@ st.subheader(w+'世帯数分布')
 st_folium(result_map, width='100%')
 
 ag_res = result.sort_values('KEY_CODE')[['町丁目名','世帯数']]
-#AgGrid.AgGrid(ag_res, fit_columns_on_grid_load=True)
-st.table(ag_res)
+AgGrid.AgGrid(ag_res, fit_columns_on_grid_load=True)
+#st.table(ag_res)
