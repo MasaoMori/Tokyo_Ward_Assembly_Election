@@ -11,15 +11,16 @@ ppath = str(pathlib.Path(cpath))
 vc = pd.read_csv(ppath + '/data/vc.csv')
 pref = pd.read_csv(ppath + '/data/pref.csv')
 
+vc = vc[&(vc['日付']>='2021/4/1')&(vc['日付']<='2023/4/30')]
+
 gtitle =  '接種者と新規陽性者 2021/4 ~ 2023/4'
 st.subheader(gtitle)
 w = st.sidebar.selectbox('都道府県名',list(pref['都道府県名']))
 
 def distp(p):
-    condition = (vc['都道府県名']==p)&(vc['日付']>='2021/4/1')&(vc['日付']<='2023/4/30')
-
-    all_country=vc[condition]
-    fig=px.line(all_country, x='日付', y='人数', color='カテゴリ',#barmode='group',
+    ac=vc[(vc['都道府県名']==p)]
+    
+    fig=px.line(ac, x='日付', y='人数', color='カテゴリ',#barmode='group',
                 width=2000,height=1000, title=p+gtitle)
     fig.update_xaxes(dtick="M1",tickformat="%m\n%Y")
     fig.update_yaxes(tickformat=',')
