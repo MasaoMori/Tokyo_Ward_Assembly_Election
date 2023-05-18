@@ -11,7 +11,7 @@ ppath = str(pathlib.Path(cpath))
 vc = pd.read_csv(ppath + '/data/vc.csv')
 pref = pd.read_csv(ppath + '/data/pref.csv')
 
-vc = vc[&(vc['日付']>='2021/4/1')&(vc['日付']<='2023/4/30')]
+vc = vc[(vc['日付']>='2021/4/1')&(vc['日付']<='2023/4/30')]
 
 gtitle =  '接種者と新規陽性者 2021/4 ~ 2023/4'
 st.subheader(gtitle)
