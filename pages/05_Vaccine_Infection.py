@@ -3,6 +3,7 @@ import pathlib
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+import plotly as pl
 
 text="""
 ## 情報源
@@ -28,6 +29,7 @@ cpath = os.getcwd()
 ppath = str(pathlib.Path(cpath))
 
 vc = pd.read_csv(ppath + '/data/vc.csv')
+vc['日付']=pd.to_datetime(vc['日付'])
 pref = pd.read_csv(ppath + '/data/pref.csv')
 
 vc = vc[(vc['日付']>='2021/4/1')&(vc['日付']<='2023/4/30')]
@@ -35,10 +37,12 @@ vc = vc[(vc['日付']>='2021/4/1')&(vc['日付']<='2023/4/30')]
 gtitle =  '接種者と新規陽性者 2021/4 ~ 2023/4'
 st.subheader(gtitle)
 w = st.sidebar.selectbox('都道府県名',list(pref['都道府県名']))
+cl=['#EF553B','#00CC96','#636EFA',]
 
-fig=px.line(vc[vc['都道府県名']==w], x='日付', y='人数', color='カテゴリ',
-            width=1400,height=800, title=w+'の'+gtitle)
-fig.update_xaxes(dtick="M1",tickformat="%b\n%Y")
+fig = px.line(vc[vc['都道府県名']==w], x='日付', y='人数', color='カテゴリ',
+              width=1400,height=800, title=w+'の'+gtitle,
+              color_discrete_sequence=cl)
+fig.update_xaxes(dtick="M1",tickformat="%m\n%Y")
 #    fig.update_yaxes(tickformat=',')
 fig.add_annotation(x='2021-12-1', y=0,text="第3回接種開始",showarrow=True, ay=30)
 fig.add_annotation(x='2022-5-27', y=0,text="第4回接種開始",showarrow=True, ay=30)
@@ -47,7 +51,7 @@ fig.update_layout(legend=dict(
     yanchor="top",
     y=0.99,
     xanchor="left",
-    x=0.01
+    x=0.8
 ))
 
 st.markdown(text)
