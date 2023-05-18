@@ -16,11 +16,11 @@ st.subheader(gtitle)
 pref = st.sidebar.selectbox('都道府県名',list(pref['都道府県名']))
 
 def distp(p):
-    condition = (vc['都道府県名']==pref)&(vc['日付']>='2021/4/1')&(vc['日付']<='2023/4/30')
+    condition = (vc['都道府県名']==p)&(vc['日付']>='2021/4/1')&(vc['日付']<='2023/4/30')
 
     all_country=vc[condition]
     fig=px.line(all_country, x='日付', y='人数', color='カテゴリ',#barmode='group',
-                width=1400,height=800, title=pref+gtitle)
+                width=1400,height=800, title=p+gtitle)
     fig.update_xaxes(dtick="M1",tickformat="%m\n%Y")
     fig.update_yaxes(tickformat=',')
     fig.add_annotation(x='2021-12-1', y=0,text="第3回接種開始",showarrow=True, ay=30)
