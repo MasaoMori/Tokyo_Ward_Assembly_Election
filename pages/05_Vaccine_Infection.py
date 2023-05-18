@@ -43,7 +43,7 @@ fig = px.line(vc[vc['都道府県名']==w], x='日付', y='人数', color='カ�
               width=1400,height=800, title=w+'の'+gtitle,
               color_discrete_sequence=cl)
 fig.update_xaxes(dtick="M1",tickformat="%m\n%Y")
-#    fig.update_yaxes(tickformat=',')
+fig.update_yaxes(tickformat=',')
 fig.add_annotation(x='2021-12-1', y=0,text="第3回接種開始",showarrow=True, ay=30)
 fig.add_annotation(x='2022-5-27', y=0,text="第4回接種開始",showarrow=True, ay=30)
 fig.add_annotation(x='2022-9-30', y=0,text="第5回接種開始",showarrow=True, ay=30)
