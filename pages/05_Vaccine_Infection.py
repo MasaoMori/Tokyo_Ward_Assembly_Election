@@ -10,10 +10,12 @@ text="""
 ### ワクチン接種者（1〜6回目接種者全て）
 + デジタル庁 ワクチン接種記録システム（VRS）
 + https://info.vrs.digital.go.jp/dashboard/
+都道府県によっては接種者のデータがないものがあります。
 
 ### COVID19新規陽性者
 + 厚生労働省 新型コロナウィルス感染症について・オープンデータ
 + https://www.mhlw.go.jp/stf/covid-19/open-data.html
+
 
 ## ワクチン接種開始時期
 + 第1,2回 2021年 2月17日
