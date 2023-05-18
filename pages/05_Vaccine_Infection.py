@@ -48,7 +48,7 @@ text="""
 
 接種者の分布と新規陽性者の分布（山のある時期）がほぼ同期していることに注意。ワクチン接種後、しばらくすると免疫力がさがることがあるようだ。
 """
-St.markdown(text)
+st.markdown(text)
 st.plotly_chart(distp(pref), use_container_width=True)
 
 
