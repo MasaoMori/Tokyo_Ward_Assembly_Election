@@ -49,10 +49,15 @@ rf = pd.read_csv(d+'/data/Ward_Age_Ward_data_reference_date.csv')
 
 refd = dict(zip(list(rf['区名']),list(rf['データ基準日'])))
 
-ward=['港区','目黒区','大田区','品川区','渋谷区',
-      '中央区','台東区','千代田区','練馬区','世田谷区',
-      '北区','葛飾区','板橋区','江戸川区','墨田区','新宿区','文京区',
-      '中野区','杉並区','豊島区','江東区','足立区','荒川区']
+ward = ['千代田区', '中央区', '港区', '新宿区', '文京区', '台東区',
+        '墨田区', '江東区', '品川区', '目黒区', '大田区', '世田谷区',
+        '渋谷区', '中野区', '杉並区', '豊島区', '北区', '荒川区',
+        '板橋区', '練馬区', '足立区', '葛飾区', '江戸川区']
+
+#ward=['港区','目黒区','大田区','品川区','渋谷区',
+#      '中央区','台東区','千代田区','練馬区','世田谷区',
+#      '北区','葛飾区','板橋区','江戸川区','墨田区','新宿区','文京区',
+#      '中野区','杉並区','豊島区','江東区','足立区','荒川区']
 
 rough_ward = ['中央区','文京区','中野区']
 
@@ -103,16 +108,28 @@ else:
         for g in fb:
             qoq = pd.concat([qoq, pop[pop['世代']==g]])
 
+    #
+    # 指定された区で町丁目別に指定年齢で人口を集計
+    #
     qoq = qoq.groupby(['区','町丁目名'])['人口'].sum().reset_index()
 
+    #
+    # Geoデータ（地図データ）読み込み
+    #
     gdf = gpd.read_file(geodir + w + '.geojson')
     gdf = gdf[gdf['HCODE']==8101]
 
+    #
+    # Geoデータと人口データを併合
+    #
     result = pd.merge(qoq, gdf, left_on=['区','町丁目名'], right_on=['CITY_NAME','S_NAME'])
     result['世代'] = gen
 
     result = gpd.GeoDataFrame(result)
 
+    #
+    # 地図の描画データを生成
+    #
     result_map = result.explore(column=result['人口'],
                                 cmap=mapcolor[cclr],
                                 tooltip=['町丁目名','世代','人口'],
@@ -124,7 +141,13 @@ else:
     for f in fb:
         st.write(f)
 
+    #
+    # 描画
+    #
     st_folium(result_map, width='100%')
 
+    #
+    # 表データを生成表示
+    #
     ag_res = result.sort_values('KEY_CODE')[['町丁目名','世代','人口']]
     AgGrid.AgGrid(ag_res, fit_columns_on_grid_load=True)
