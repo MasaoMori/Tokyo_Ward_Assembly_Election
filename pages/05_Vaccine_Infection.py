@@ -2,8 +2,6 @@ import os
 import pathlib
 import pandas as pd
 import plotly.express as px
-import ndjson
-import locale
 import streamlit as st
 
 cpath = os.getcwd()
