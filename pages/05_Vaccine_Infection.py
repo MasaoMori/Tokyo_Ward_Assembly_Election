@@ -29,6 +29,26 @@ def distp(p):
 
     return fig
 
+text="""
+* 情報源
+** ワクチン接種者（1〜6回目接種者全て）
+   デジタル庁 ワクチン接種記録システム（VRS）
+   https://info.vrs.digital.go.jp/dashboard/
+** COVID19新規陽性者
+   厚生労働省 新型コロナウィルス感染症について・オープンデータ
+   https://www.mhlw.go.jp/stf/covid-19/open-data.html
+
+* ワクチン接種開始時期
+第１・２回 2021年 2月17日
+第３回 2021年12月 1日
+第４回 2022年 5月27日
+第５回 2022年10月
+第６回 2023年 5月11日
+
+接種者の分布と新規陽性者の分布（山のある時期）がほぼ同期していることに注意。ワクチン接種後、しばらくすると免疫力がさがることがあるようだ。
+"""
+st.header('ワクチン接種者とCOVID19新規陽性者の推移')
+st.markdown(text)
 st.plotly_chart(distp(pref), use_container_width=True)
 
 
