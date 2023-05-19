@@ -32,16 +32,21 @@ ppath = str(pathlib.Path(cpath))
 
 vc = pd.read_csv(ppath + '/data/vc.csv')
 vc['日付']=pd.to_datetime(vc['日付'])
+
 pref = pd.read_csv(ppath + '/data/pref.csv', dtype=str)
 
 vc = vc[(vc['日付']>='2021/4/1')&(vc['日付']<='2023/4/30')]
 
 gtitle =  '接種者と新規陽性者 2021/4 ~ 2023/4'
 st.subheader(gtitle)
+
 w = st.sidebar.selectbox('都道府県名',list(pref['都道府県名']))
 
-cl=['#EF553B','#00CC96','#636EFA',]
-fig = px.line(vc[vc['都道府県名']==w], x='日付', y='人数', color='カテゴリ',
+#cl=['#EF553B','#00CC96','#636EFA',]
+cl=['#EF553B','aqua','#636EFA',]
+
+#fig = px.line(vc[vc['都道府県名']==w], x='日付', y='人数', color='カテゴリ',
+fig = px.bar(vc[vc['都道府県名']==w], x='日付', y='人数', color='カテゴリ',
               width=1400,height=800, title=w+'の'+gtitle,
               color_discrete_sequence=cl)
 fig.update_xaxes(dtick="M1",tickformat="%m\n%Y")
