@@ -35,9 +35,9 @@ vc['日付']=pd.to_datetime(vc['日付'])
 
 pref = pd.read_csv(ppath + '/data/pref.csv', dtype=str)
 
-vc = vc[(vc['日付']>='2021/4/1')&(vc['日付']<='2023/4/30')]
+vc = vc[(vc['日付']>='2021/4/1')&(vc['日付']<='2023/12/31')]
 
-gtitle =  '接種者と新規陽性者 2021/4 ~ 2023/4'
+gtitle =  '接種者と新規陽性者 2021/4 ~ 2023/12'
 st.subheader(gtitle)
 
 w = st.sidebar.selectbox('都道府県名',list(pref['都道府県名']))
